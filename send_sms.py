@@ -9,8 +9,8 @@ auth_token = "6b65df96c48e7d3b99ac574d872af60a"
 client = TwilioRestClient(account_sid, auth_token)
 
 needle = "Trump"
-total_nyt_headline_count = nyt_headline_count(needle)
+total_nyt_count = nyt_all_text_count(needle)
 
-body_text = "%s: NYT website currently includes %d headline mentions of %s" % (strftime("%Y-%m-%d %I:%M:%S"), total_nyt_headline_count, needle)
+body_text = "%s: nytimes.com homepage currently includes %d mentions of %s" % (strftime("%Y-%m-%d %I:%M:%S"), total_nyt_count, needle)
 
 message = client.messages.create(to="+17816402658", from_="+17815705388", body=body_text)

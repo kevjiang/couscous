@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import urllib2
+import re
 
 def nyt_headline_count(needle):
 	'''
@@ -32,4 +33,27 @@ def nyt_headline_count(needle):
 
 	return needle_count
 
-	
+def nyt_all_text_count(needle):
+	html = urllib2.urlopen('http://www.nytimes.com').read()
+	soup = BeautifulSoup(html)
+	texts = soup.findAll(text=True)
+
+	def visible(element):
+	    if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
+	        return False
+	    elif re.match('<!--.*-->', unicode(element)):
+	        return False
+	    return True
+
+	visible_texts = filter(visible, texts)
+	visible_texts = visible_texts
+
+	needle = needle.lower()
+	needle_count = 0
+
+	for elem in visible_texts:
+		elem = elem.lower()
+		if needle in elem:
+			needle_count += elem.count(needle)
+
+	return needle_count
